@@ -7,6 +7,7 @@ import LoadCardSkeleton from "../../components/loads/LoadCardSkeleton";
 import LoadFilters from "../../components/loads/LoadFilters";
 import Button from "../../components/ui/Button";
 import { getMyLoads } from "../../api/loads";
+import { errorMessage } from "../../lib/errors";
 import { listContainer, fadeUp } from "../../components/motion/variants";
 
 export default function LoadsPage() {
@@ -29,11 +30,7 @@ export default function LoadsPage() {
         if (!cancelled) setLoads(data);
       } catch (err) {
         if (cancelled) return;
-        if (err.response?.status === 401) {
-          setError("Your session expired. Please log out and sign in again.");
-        } else {
-          setError("Could not reach the API. Is your backend running?");
-        }
+        setError(errorMessage(err));
       } finally {
         if (!cancelled) setLoading(false);
       }
