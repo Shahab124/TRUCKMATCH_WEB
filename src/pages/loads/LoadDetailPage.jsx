@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, MapPin, Package, Weight, Calendar, Trash2 } from "lucide-react";
+import { ArrowLeft, MapPin, Package, Weight, Calendar, Trash2, Truck } from "lucide-react";
 import Navbar from "../../components/layout/Navbar";
 import Badge from "../../components/ui/Badge";
 import Button from "../../components/ui/Button";
@@ -115,6 +115,17 @@ export default function LoadDetailPage() {
               <div className="px-6 py-4 border-t border-slate-100">
                 <p className="text-xs font-semibold text-slate-600 mb-1.5">Notes</p>
                 <p className="text-sm text-slate-600 leading-relaxed">{load.description}</p>
+              </div>
+            )}
+
+            {load.status === "pending" && (
+              <div className="px-6 py-4 border-t border-slate-100">
+                <Link to={`/loads/${load.id}/matches`}>
+                  <Button className="w-full sm:w-auto">
+                    <Truck className="w-4 h-4" />
+                    Find trucks for this load
+                  </Button>
+                </Link>
               </div>
             )}
 

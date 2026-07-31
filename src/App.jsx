@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import LoadsPage from "./pages/loads/LoadsPage";
 import NewLoadPage from "./pages/loads/NewLoadPage";
 import LoadDetailPage from "./pages/loads/LoadDetailPage";
+import MatchesPage from "./pages/loads/MatchesPage";
 import TrucksPage from "./pages/trucks/TrucksPage";
 import NewTruckPage from "./pages/trucks/NewTruckPage";
 import TripsPage from "./pages/trips/TripsPage";
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="/loads" element={<Page><LoadsPage /></Page>} />
         <Route path="/loads/new" element={<Page><NewLoadPage /></Page>} />
         <Route path="/loads/:loadId" element={<Page><LoadDetailPage /></Page>} />
+        <Route path="/loads/:loadId/matches" element={<Page><MatchesPage /></Page>} />
 
         <Route path="/trucks" element={<Page><TrucksPage /></Page>} />
         <Route path="/trucks/new" element={<Page><NewTruckPage /></Page>} />
