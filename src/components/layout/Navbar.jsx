@@ -8,10 +8,14 @@ import { useAuth } from "../../context/AuthContext";
 
 // Nav is driven by role. Add a link here when its page ships — one source of truth.
 const NAV = {
-  shipper: [{ to: "/loads", label: "My Loads", icon: Package }],
+  shipper: [
+    { to: "/loads", label: "My Loads", icon: Package },
+    { to: "/bookings", label: "Bookings", icon: Inbox },
+  ],
   driver: [
     { to: "/trips", label: "My Trips", icon: Route },
     { to: "/trucks", label: "My Trucks", icon: Truck },
+    { to: "/bookings", label: "Bookings", icon: Inbox },
   ],
 };
 

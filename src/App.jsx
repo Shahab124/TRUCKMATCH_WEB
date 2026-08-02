@@ -10,6 +10,7 @@ import TrucksPage from "./pages/trucks/TrucksPage";
 import NewTruckPage from "./pages/trucks/NewTruckPage";
 import TripsPage from "./pages/trips/TripsPage";
 import NewTripPage from "./pages/trips/NewTripPage";
+import BookingsPage from "./pages/BookingsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import PageTransition from "./components/motion/PageTransition";
@@ -48,6 +49,8 @@ export default function App() {
         <Route path="/trucks/new" element={<Page><NewTruckPage /></Page>} />
         <Route path="/trips" element={<Page><TripsPage /></Page>} />
         <Route path="/trips/new" element={<Page><NewTripPage /></Page>} />
+
+        <Route path="/bookings" element={<Page><BookingsPage /></Page>} />
 
         <Route path="*" element={<Page guard={false}><NotFoundPage /></Page>} />
       </Routes>
