@@ -4,7 +4,12 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Truck, ArrowRight, MapPin, Search, Handshake, Radio } from "lucide-react";
 import TripMap from "../components/map/TripMap";
 import Button from "../components/ui/Button";
+import PhotoPanel from "../components/ui/PhotoPanel";
 import { useSimulatedPositions } from "../hooks/useSimulatedPositions";
+import convoyPhoto from "../assets/photos/convoy.jpg";
+import parkedPhoto from "../assets/photos/road.jpg";
+import duskPhoto from "../assets/photos/highway.jpg";
+import goldenPhoto from "../assets/photos/loading.jpg";
 
 // Real routes on a real map, positions simulated client side. Nothing here
 // calls the API, so the landing page works signed out.
@@ -43,13 +48,17 @@ const ROLES = [
     who: "For shippers",
     line: "Post a load and see every truck already heading that way with room to spare.",
     points: ["Post loads in under a minute", "Matched on route and capacity", "Track the load to delivery"],
-    dark: true,
+    photo: convoyPhoto,
+    alt: "A loaded freight truck on an open highway in daylight",
+    overlay: "dark",
   },
   {
     who: "For drivers",
     line: "Fill the empty leg. Publish the trip you are running and let the freight come to you.",
     points: ["List your trucks and trips", "Accept or decline every request", "Build a rating that travels with you"],
-    dark: false,
+    photo: duskPhoto,
+    alt: "A freight trailer on the highway at dusk",
+    overlay: "emerald",
   },
 ];
 
@@ -75,7 +84,13 @@ export default function Landing() {
 
       <main>
         {/* Hero: asymmetric split, copy left, the real product right */}
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-16">
+        <section className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-16">
+          {/* Soft emerald wash behind the hero. Decorative, never intercepts clicks. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-24 -left-32 w-[38rem] h-[38rem] rounded-full
+                       bg-emerald-200/35 blur-3xl -z-10"
+          />
           <div className="grid lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-14 items-center">
             <motion.div
               initial={reduce ? false : reveal.initial}
@@ -124,6 +139,33 @@ export default function Landing() {
           </div>
         </section>
 
+        {/* The problem, stated over a photo of exactly the problem */}
+        <PhotoPanel
+          src={parkedPhoto}
+          alt="Two rows of freight trucks parked and waiting"
+          overlay="dark"
+          parallax
+          className="h-[22rem] sm:h-[26rem]"
+        >
+          <div className="h-full max-w-6xl mx-auto px-4 sm:px-6 flex items-end pb-12 sm:pb-16">
+            <motion.div
+              initial={reduce ? false : { opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-xl"
+            >
+              <p className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
+                Half of these will drive home empty.
+              </p>
+              <p className="mt-3 text-slate-200 leading-relaxed">
+                Every empty return leg is fuel burned for nothing. Matching a load to a
+                truck already making the trip costs the driver almost nothing to carry.
+              </p>
+            </motion.div>
+          </div>
+        </PhotoPanel>
+
         {/* How it works: vertical numbered flow, not three equal cards */}
         <section className="border-t border-slate-200 bg-slate-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
@@ -161,62 +203,74 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* Two sides of the marketplace */}
+        {/* Two sides of the marketplace, each behind its own photo */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
           <div className="grid md:grid-cols-2 gap-6">
             {ROLES.map((col, i) => (
               <motion.div
                 key={col.who}
-                initial={reduce ? false : { opacity: 0, y: 24 }}
+                initial={reduce ? false : { opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.55, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className={`rounded-2xl p-7 sm:p-9 ${col.dark
-                  ? "bg-slate-900"
-                  : "bg-white border border-slate-200"}`}
+                whileHover={reduce ? undefined : { y: -6 }}
+                className="group rounded-2xl overflow-hidden shadow-lg shadow-slate-900/5
+                           hover:shadow-2xl hover:shadow-slate-900/15
+                           transition-shadow duration-300"
               >
-                <h3 className={`text-2xl font-bold tracking-tight ${col.dark ? "text-white" : "text-slate-900"}`}>
-                  {col.who}
-                </h3>
-                <p className={`mt-3 leading-relaxed ${col.dark ? "text-slate-300" : "text-slate-600"}`}>
-                  {col.line}
-                </p>
-                <ul className="mt-6 space-y-3">
-                  {col.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2.5">
-                      <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0
-                                        ${col.dark ? "bg-emerald-400" : "bg-emerald-600"}`}
-                            aria-hidden="true" />
-                      <span className={`text-sm ${col.dark ? "text-slate-200" : "text-slate-700"}`}>{p}</span>
-                    </li>
-                  ))}
-                </ul>
+                <PhotoPanel
+                  src={col.photo}
+                  alt={col.alt}
+                  overlay={col.overlay}
+                  className="min-h-[24rem] sm:min-h-[26rem]"
+                >
+                  {/* Slow zoom on hover signals the card is interactive. */}
+                  <div className="h-full flex flex-col justify-end p-7 sm:p-9">
+                    <h3 className="text-2xl font-bold tracking-tight text-white">{col.who}</h3>
+                    <p className="mt-3 text-slate-200 leading-relaxed">{col.line}</p>
+                    <ul className="mt-6 space-y-3">
+                      {col.points.map((p) => (
+                        <li key={p} className="flex items-start gap-2.5">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-emerald-400"
+                                aria-hidden="true" />
+                          <span className="text-sm text-slate-100">{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </PhotoPanel>
               </motion.div>
             ))}
           </div>
         </section>
 
         {/* Closing band, same CTA intent as the hero */}
-        <section className="border-t border-slate-200 bg-slate-50">
+        <PhotoPanel
+          src={goldenPhoto}
+          alt="A freight truck at golden hour with mountains behind"
+          overlay="emerald"
+          parallax
+          className="min-h-[24rem] flex items-center"
+        >
           <motion.div
             initial={reduce ? false : reveal.initial}
             whileInView={reveal.animate}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center"
+            className="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center"
           >
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
               Start moving freight
             </h2>
-            <p className="mt-3 text-slate-600">Free to join as a shipper or a driver.</p>
+            <p className="mt-3 text-slate-200">Free to join as a shipper or a driver.</p>
             <Link to="/register" className="inline-block mt-7">
-              <Button variant="accent" className="px-6 py-3">
+              <Button variant="accent" className="px-6 py-3 shadow-xl shadow-emerald-950/30">
                 Get started
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Button>
             </Link>
           </motion.div>
-        </section>
+        </PhotoPanel>
       </main>
 
       <footer className="border-t border-slate-200">

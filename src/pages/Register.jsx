@@ -1,20 +1,25 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Truck } from "lucide-react";
+import { motion } from "framer-motion";
+import { Package, Truck } from "lucide-react";
+import AuthLayout from "../components/layout/AuthLayout";
+import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import Spinner from "../components/ui/Spinner";
+import { errorMessage } from "../lib/errors";
 import { useAuth } from "../context/AuthContext";
+
+const ROLES = [
+  { value: "shipper", label: "Shipper", hint: "I have freight to move", icon: Package },
+  { value: "driver", label: "Driver", hint: "I have a truck", icon: Truck },
+];
 
 export default function Register() {
   const { signup, login } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
-    role: "shipper",
+    name: "", email: "", password: "", phone: "", role: "shipper",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -31,93 +36,104 @@ export default function Register() {
     try {
       await signup(form);
       await login(form.email, form.password);
-      navigate("/", { replace: true }); // HomeRedirect routes by role
+      navigate("/", { replace: true }); // Home routes by role
     } catch (err) {
       const detail = err.response?.data?.detail;
-      if (typeof detail === "string") {
-        setError(detail);
-      } else if (Array.isArray(detail)) {
+      if (Array.isArray(detail)) {
         setError(detail.map((d) => `${d.loc?.at(-1)}: ${d.msg}`).join(" · "));
       } else {
-        setError("Could not create your account. Please try again.");
+        setError(errorMessage(err, "Could not create your account. Please try again."));
       }
     } finally {
       setLoading(false);
     }
   }
 
-  const inputClass = `w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm
-                      placeholder:text-slate-400 focus:outline-none focus:ring-2
-                      focus:ring-emerald-500 focus:border-emerald-500 transition-all`;
-
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-6 py-10">
-      <div className="w-full max-w-sm">
-
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <Truck className="w-7 h-7 text-emerald-600" />
-          <span className="text-2xl font-bold tracking-tight text-slate-900">TruckMatch</span>
-        </div>
-
-        <form onSubmit={handleSubmit}
-              className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-
-          <h1 className="text-lg font-bold text-slate-900 mb-1">Create your account</h1>
-          <p className="text-sm text-slate-500 mb-6">Move freight or find loads.</p>
-
-          {error && (
-            <div className="mb-4 rounded-lg bg-red-50 ring-1 ring-red-200 px-3 py-2.5">
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
-          )}
-
-          <label className="block text-xs font-semibold text-slate-600 mb-1.5">I am a</label>
-          <div className="grid grid-cols-2 gap-2 mb-4">
-            {["shipper", "driver"].map((role) => (
-              <button
-                key={role}
-                type="button"
-                onClick={() => updateField("role", role)}
-                className={`px-3 py-2.5 rounded-lg text-sm font-semibold capitalize border transition-all
-                  ${form.role === role
-                    ? "border-emerald-500 bg-emerald-50 text-emerald-700"
-                    : "border-slate-300 text-slate-600 hover:bg-slate-50"}`}
-              >
-                {role}
-              </button>
-            ))}
+    <AuthLayout title="Create your account" subtitle="Move freight or find loads.">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="rounded-lg bg-red-50 ring-1 ring-red-200 px-3 py-2.5"
+               role="alert" aria-live="polite">
+            <p className="text-sm text-red-700">{error}</p>
           </div>
+        )}
 
-          <label className="block text-xs font-semibold text-slate-600 mb-1.5">Full name</label>
-          <input value={form.name} onChange={(e) => updateField("name", e.target.value)}
-                 placeholder="Ali Raza" className={`${inputClass} mb-4`} required />
+        {/* Role choice drives every permission in the app, so it leads the form. */}
+        <fieldset>
+          <legend className="block text-xs font-semibold text-slate-700 mb-1.5">I am a</legend>
+          <div className="grid grid-cols-2 gap-2.5">
+            {ROLES.map(({ value, label, hint, icon: Icon }) => {
+              const active = form.role === value;
+              return (
+                <motion.button
+                  key={value}
+                  type="button"
+                  onClick={() => updateField("role", value)}
+                  aria-pressed={active}
+                  whileTap={{ scale: 0.97 }}
+                  className={`text-left px-3.5 py-3 rounded-xl border-2 touch-manipulation
+                              transition-colors duration-200
+                              focus-visible:outline-none focus-visible:ring-2
+                              focus-visible:ring-emerald-600 focus-visible:ring-offset-2
+                    ${active
+                      ? "border-emerald-600 bg-emerald-50"
+                      : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"}`}
+                >
+                  <Icon className={`w-5 h-5 mb-1.5 ${active ? "text-emerald-600" : "text-slate-400"}`}
+                        aria-hidden="true" />
+                  <span className={`block text-sm font-bold ${active ? "text-emerald-900" : "text-slate-800"}`}>
+                    {label}
+                  </span>
+                  <span className={`block text-xs mt-0.5 ${active ? "text-emerald-700" : "text-slate-500"}`}>
+                    {hint}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </fieldset>
 
-          <label className="block text-xs font-semibold text-slate-600 mb-1.5">Email</label>
-          <input type="email" value={form.email} onChange={(e) => updateField("email", e.target.value)}
-                 placeholder="you@example.com" className={`${inputClass} mb-4`} required />
+        <Input
+          label="Full name" name="name" autoComplete="name"
+          value={form.name} onChange={(e) => updateField("name", e.target.value)}
+          placeholder="Ali Raza" required
+        />
 
-          <label className="block text-xs font-semibold text-slate-600 mb-1.5">Phone</label>
-          <input value={form.phone} onChange={(e) => updateField("phone", e.target.value)}
-                 placeholder="03001234567" className={`${inputClass} mb-4`} required />
+        <Input
+          label="Email" name="email" type="email" inputMode="email"
+          autoComplete="email" spellCheck={false}
+          value={form.email} onChange={(e) => updateField("email", e.target.value)}
+          placeholder="you@example.com" required
+        />
 
-          <label className="block text-xs font-semibold text-slate-600 mb-1.5">Password</label>
-          <input type="password" value={form.password} onChange={(e) => updateField("password", e.target.value)}
-                 placeholder="At least 8 characters" className={`${inputClass} mb-6`} required minLength={8} />
+        <Input
+          label="Phone" name="tel" type="tel" inputMode="tel" autoComplete="tel"
+          value={form.phone} onChange={(e) => updateField("phone", e.target.value)}
+          placeholder="03001234567" required
+        />
 
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading && <Spinner />}
-            {loading ? "Creating account..." : "Create account"}
-          </Button>
+        <Input
+          label="Password" name="password" type="password" autoComplete="new-password"
+          value={form.password} onChange={(e) => updateField("password", e.target.value)}
+          placeholder="At least 8 characters" required minLength={8}
+          hint="Use at least 8 characters."
+        />
 
-          <p className="text-center text-sm text-slate-500 mt-5">
-            Already registered?{" "}
-            <Link to="/login" className="font-semibold text-emerald-600 hover:text-emerald-700">
-              Sign in
-            </Link>
-          </p>
+        <Button type="submit" variant="accent" disabled={loading} className="w-full">
+          {loading && <Spinner />}
+          {loading ? "Creating account…" : "Create account"}
+        </Button>
 
-        </form>
-      </div>
-    </div>
+        <p className="text-center text-sm text-slate-600 pt-1">
+          Already registered?{" "}
+          <Link to="/login"
+                className="font-semibold text-emerald-700 hover:text-emerald-800 rounded
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600">
+            Sign in
+          </Link>
+        </p>
+      </form>
+    </AuthLayout>
   );
 }
