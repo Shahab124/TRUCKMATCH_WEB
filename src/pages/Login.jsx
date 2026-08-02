@@ -21,7 +21,7 @@ export default function Login() {
 
     try {
       await login(email, password);
-      navigate("/loads", { replace: true });
+      navigate("/", { replace: true }); // HomeRedirect routes by role
     } catch (err) {
       const detail = err.response?.data?.detail;
       setError(typeof detail === "string" ? detail : "Login failed. Check your email and password.");

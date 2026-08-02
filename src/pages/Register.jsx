@@ -31,7 +31,7 @@ export default function Register() {
     try {
       await signup(form);
       await login(form.email, form.password);
-      navigate("/loads", { replace: true });
+      navigate("/", { replace: true }); // HomeRedirect routes by role
     } catch (err) {
       const detail = err.response?.data?.detail;
       if (typeof detail === "string") {
