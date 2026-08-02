@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Truck, Plus, LogOut, Menu, X, Package, Route, Inbox, LayoutDashboard } from "lucide-react";
+import { Truck, Plus, LogOut, Menu, X, Package, Route, Inbox, LayoutDashboard, Map } from "lucide-react";
 import Button from "../ui/Button";
 import Badge from "../ui/Badge";
 import { useAuth } from "../../context/AuthContext";
@@ -12,12 +12,14 @@ const NAV = {
     { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { to: "/loads", label: "My Loads", icon: Package },
     { to: "/bookings", label: "Bookings", icon: Inbox },
+    { to: "/map", label: "Live Map", icon: Map },
   ],
   driver: [
     { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { to: "/trips", label: "My Trips", icon: Route },
     { to: "/trucks", label: "My Trucks", icon: Truck },
     { to: "/bookings", label: "Bookings", icon: Inbox },
+    { to: "/map", label: "Live Map", icon: Map },
   ],
 };
 
