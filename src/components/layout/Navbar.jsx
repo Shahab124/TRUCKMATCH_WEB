@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Truck, Plus, LogOut, Menu, X, Package, Route, Inbox } from "lucide-react";
+import { Truck, Plus, LogOut, Menu, X, Package, Route, Inbox, LayoutDashboard } from "lucide-react";
 import Button from "../ui/Button";
 import Badge from "../ui/Badge";
 import { useAuth } from "../../context/AuthContext";
@@ -9,10 +9,12 @@ import { useAuth } from "../../context/AuthContext";
 // Nav is driven by role. Add a link here when its page ships — one source of truth.
 const NAV = {
   shipper: [
+    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { to: "/loads", label: "My Loads", icon: Package },
     { to: "/bookings", label: "Bookings", icon: Inbox },
   ],
   driver: [
+    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { to: "/trips", label: "My Trips", icon: Route },
     { to: "/trucks", label: "My Trucks", icon: Truck },
     { to: "/bookings", label: "Bookings", icon: Inbox },

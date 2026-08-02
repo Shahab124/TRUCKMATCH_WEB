@@ -11,16 +11,15 @@ import NewTruckPage from "./pages/trucks/NewTruckPage";
 import TripsPage from "./pages/trips/TripsPage";
 import NewTripPage from "./pages/trips/NewTripPage";
 import BookingsPage from "./pages/BookingsPage";
+import Dashboard from "./pages/Dashboard";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import PageTransition from "./components/motion/PageTransition";
-import { useAuth } from "./context/AuthContext";
 
 // Send each role to its own home instead of dumping everyone on /loads
 // (which is shipper-only and 403s for drivers).
 function HomeRedirect() {
-  const { user } = useAuth();
-  return <Navigate to={user?.role === "driver" ? "/trips" : "/loads"} replace />;
+  return <Navigate to="/dashboard" replace />;
 }
 
 // Wrap a page in the protected + transition chrome once instead of per-route.
@@ -39,6 +38,8 @@ export default function App() {
 
         <Route path="/login" element={<Page guard={false}><Login /></Page>} />
         <Route path="/register" element={<Page guard={false}><Register /></Page>} />
+
+        <Route path="/dashboard" element={<Page><Dashboard /></Page>} />
 
         <Route path="/loads" element={<Page><LoadsPage /></Page>} />
         <Route path="/loads/new" element={<Page><NewLoadPage /></Page>} />
