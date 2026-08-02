@@ -15,14 +15,17 @@ import BookingDetailPage from "./pages/BookingDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import Dashboard from "./pages/Dashboard";
 import MapPage from "./pages/MapPage";
+import Landing from "./pages/Landing";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import PageTransition from "./components/motion/PageTransition";
+import { useAuth } from "./context/AuthContext";
 
-// Send each role to its own home instead of dumping everyone on /loads
-// (which is shipper-only and 403s for drivers).
-function HomeRedirect() {
-  return <Navigate to="/dashboard" replace />;
+// Signed out visitors get the marketing page; signed in users go straight to
+// their dashboard rather than reading the pitch again.
+function Home() {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? <Navigate to="/dashboard" replace /> : <Landing />;
 }
 
 // Wrap a page in the protected + transition chrome once instead of per-route.
@@ -37,7 +40,7 @@ export default function App() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<ProtectedRoute><HomeRedirect /></ProtectedRoute>} />
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
 
         <Route path="/login" element={<Page guard={false}><Login /></Page>} />
         <Route path="/register" element={<Page guard={false}><Register /></Page>} />
