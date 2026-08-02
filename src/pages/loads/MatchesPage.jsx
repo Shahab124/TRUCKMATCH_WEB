@@ -13,7 +13,7 @@ import { createBooking } from "../../api/bookings";
 import { errorMessage } from "../../lib/errors";
 import { useFetch } from "../../hooks/useFetch";
 import { formatWeight } from "../../lib/format";
-import { listContainer, fadeUp } from "../../components/motion/variants";
+import { listContainer, fadeUp, popIn } from "../../components/motion/variants";
 
 export default function MatchesPage() {
   const { loadId } = useParams();
@@ -85,11 +85,21 @@ export default function MatchesPage() {
             {booked ? (
               <motion.div
                 key="success"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl bg-emerald-50 ring-1 ring-emerald-200 p-8 text-center"
+                variants={popIn}
+                initial="initial"
+                animate="animate"
+                aria-live="polite"
+                className="rounded-2xl bg-gradient-to-b from-emerald-50 to-white
+                           ring-1 ring-emerald-200 p-8 text-center shadow-lg shadow-emerald-600/10"
               >
-                <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
+                <motion.span
+                  initial={{ scale: 0.4, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.08 }}
+                  className="inline-block"
+                >
+                  <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-3" aria-hidden="true" />
+                </motion.span>
                 <p className="text-lg font-bold text-slate-900 mb-1">Booking requested</p>
                 <p className="text-sm text-slate-600 mb-6">
                   Sent to the driver on {booked.origin} → {booked.destination}. They'll accept or decline it.

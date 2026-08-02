@@ -2,16 +2,18 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Check, X, Package, Truck, Star } from "lucide-react";
 import { formatDateTime } from "../../lib/format";
 
+// Tones match lib/status.js so a state reads the same colour everywhere.
 const STEP = {
   pending: { icon: Package, label: "Booking requested", tone: "amber" },
   accepted: { icon: Check, label: "Driver accepted", tone: "emerald" },
   rejected: { icon: X, label: "Driver declined", tone: "slate" },
-  completed: { icon: Truck, label: "Delivered", tone: "emerald" },
+  completed: { icon: Truck, label: "Delivered", tone: "violet" },
   rated: { icon: Star, label: "Rated", tone: "amber" },
 };
 
 const TONE = {
   emerald: "bg-emerald-600 text-white ring-emerald-100",
+  violet: "bg-violet-600 text-white ring-violet-100",
   amber: "bg-amber-500 text-white ring-amber-100",
   slate: "bg-slate-400 text-white ring-slate-100",
 };

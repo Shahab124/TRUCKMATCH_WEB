@@ -1,1 +1,46 @@
 @import "tailwindcss";
+
+/* Anchored headings clear the sticky navbar when linked to. */
+:where(h1, h2, h3) {
+  scroll-margin-top: 5rem;
+}
+
+/* Skeleton shimmer: a light sweep instead of a flat pulse. Applied to the
+   placeholder blocks themselves, never to a scrolling container. */
+@utility shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-slate-200);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.6),
+      transparent
+    );
+    animation: shimmer-sweep 1.6s infinite;
+  }
+}
+
+@keyframes shimmer-sweep {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Motion here is decoration, so it goes away entirely when the user asks. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

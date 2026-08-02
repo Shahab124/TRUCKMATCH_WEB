@@ -13,16 +13,16 @@ import { listContainer, fadeUp } from "../components/motion/variants";
 // Which tiles each role sees, and how to label the raw counts from the API.
 const TILES = {
   shipper: [
-    { key: "loads_total", label: "Total loads", icon: Package },
-    { key: "loads_pending", label: "Awaiting a truck", icon: Clock },
-    { key: "loads_booked", label: "Booked", icon: CheckCircle2 },
-    { key: "bookings_total", label: "Bookings made", icon: Inbox },
+    { key: "loads_total", label: "Total loads", icon: Package, tint: "slate" },
+    { key: "loads_pending", label: "Awaiting a truck", icon: Clock, tint: "amber" },
+    { key: "loads_booked", label: "Booked", icon: CheckCircle2, tint: "sky" },
+    { key: "bookings_total", label: "Bookings made", icon: Inbox, tint: "violet" },
   ],
   driver: [
-    { key: "trips_total", label: "Trips posted", icon: Route },
-    { key: "trucks_total", label: "Trucks", icon: Truck },
-    { key: "requests_pending", label: "Pending requests", icon: Bell, accentWhenNonZero: true },
-    { key: "bookings_accepted", label: "Accepted", icon: CheckCircle2 },
+    { key: "trips_total", label: "Trips posted", icon: Route, tint: "sky" },
+    { key: "trucks_total", label: "Trucks", icon: Truck, tint: "slate" },
+    { key: "requests_pending", label: "Pending requests", icon: Bell, tint: "amber", accentWhenNonZero: true },
+    { key: "bookings_accepted", label: "Accepted", icon: CheckCircle2, tint: "emerald" },
   ],
 };
 
@@ -90,6 +90,7 @@ export default function Dashboard() {
               icon={t.icon}
               label={t.label}
               value={stats[t.key] ?? 0}
+              tint={t.tint}
               accent={t.accentWhenNonZero && (stats[t.key] ?? 0) > 0}
             />
           ))}

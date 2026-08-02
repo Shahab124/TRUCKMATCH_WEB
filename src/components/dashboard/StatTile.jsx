@@ -29,24 +29,35 @@ function CountUp({ value }) {
   return <span>{display}</span>;
 }
 
-export default function StatTile({ icon: Icon, label, value, accent = false }) {
+// Each metric carries its own icon tint so a row of tiles is readable at a glance.
+const TINT = {
+  emerald: "bg-emerald-50 text-emerald-700",
+  sky: "bg-sky-50 text-sky-700",
+  violet: "bg-violet-50 text-violet-700",
+  amber: "bg-amber-50 text-amber-700",
+  slate: "bg-slate-100 text-slate-600",
+};
+
+export default function StatTile({ icon: Icon, label, value, tint = "slate", accent = false }) {
   return (
     <motion.div
       variants={listItem}
       whileHover={{ y: -4 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className={`rounded-2xl border p-5 shadow-sm ${
-        accent ? "bg-emerald-600 border-emerald-600" : "bg-white border-slate-200"
-      }`}
+      transition={{ type: "spring", stiffness: 380, damping: 28 }}
+      className={`rounded-2xl border p-5 transition-shadow duration-300
+        ${accent
+          ? "bg-gradient-to-br from-emerald-600 to-emerald-700 border-emerald-700 shadow-lg shadow-emerald-600/25"
+          : "bg-white border-slate-200 shadow-sm hover:shadow-md"}`}
     >
       <div className={`inline-flex items-center justify-center w-9 h-9 rounded-lg mb-4
-                      ${accent ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"}`}>
-        <Icon className="w-4 h-4" />
+                      ${accent ? "bg-white/20 text-white" : TINT[tint]}`}>
+        <Icon className="w-4 h-4" aria-hidden="true" />
       </div>
-      <p className={`text-3xl font-bold tracking-tight ${accent ? "text-white" : "text-slate-900"}`}>
+      <p className={`text-3xl font-bold tracking-tight tabular-nums
+                     ${accent ? "text-white" : "text-slate-900"}`}>
         <CountUp value={value} />
       </p>
-      <p className={`text-sm mt-1 ${accent ? "text-emerald-50" : "text-slate-500"}`}>{label}</p>
+      <p className={`text-sm mt-1 ${accent ? "text-emerald-50" : "text-slate-600"}`}>{label}</p>
     </motion.div>
   );
 }

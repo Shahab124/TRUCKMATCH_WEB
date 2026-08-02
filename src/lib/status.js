@@ -1,7 +1,11 @@
+// Each lifecycle state gets its own colour so a glance reads the status.
+// Keys are normalised (lowercase, spaces to underscores).
 const COLORS = {
-  emerald: ["open", "available", "active", "accepted", "delivered", "completed"],
-  amber: ["pending", "booked", "in_transit", "intransit", "assigned"],
-  slate: ["cancelled", "canceled", "rejected", "expired", "closed"],
+  emerald: ["open", "available", "active", "accepted"],
+  sky: ["in_transit", "intransit", "assigned", "booked"],
+  violet: ["delivered", "completed"],
+  amber: ["pending", "awaiting"],
+  slate: ["cancelled", "canceled", "rejected", "expired", "closed", "inactive"],
 };
 
 export function statusColor(status) {

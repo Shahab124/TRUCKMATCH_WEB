@@ -3,25 +3,18 @@ import { motion } from "framer-motion";
 import { MapPin, Package, Weight, Calendar } from "lucide-react";
 import Badge from "../ui/Badge";
 import { formatWeight, formatDate } from "../../lib/format";
-import { listItem } from "../motion/variants";
+import { listItem, liftOnHover } from "../motion/variants";
 import { statusColor } from "../../lib/status";
 
-
 export default function LoadCard({ load }) {
-  
-
   return (
-    <motion.div
-      layout
-      variants={listItem}
-      whileHover={{ y: -5 }}
-      whileTap={{ scale: 0.99 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-    >
+    <motion.div layout variants={listItem} exit="exit" {...liftOnHover}>
       <Link
         to={`/loads/${load.id}`}
         className="block bg-white rounded-2xl border border-slate-200 p-5 shadow-sm
-                   hover:shadow-xl hover:border-slate-300 transition-shadow duration-300"
+                   hover:shadow-xl hover:border-emerald-300 transition-shadow duration-300
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600
+                   focus-visible:ring-offset-2"
       >
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-center gap-2 text-slate-900 min-w-0">
