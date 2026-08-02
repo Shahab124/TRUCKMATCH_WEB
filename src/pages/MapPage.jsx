@@ -95,8 +95,8 @@ export default function MapPage() {
         <Info className="w-4 h-4 mt-0.5 shrink-0" />
         <p>
           {demo
-            ? "Demo mode — positions are simulated along each route, not real GPS. Use it to show the map working without hardware."
-            : "Live mode — showing the last position each driver reported (PUT /trips/{id}/location). Trucks appear once a driver reports in."}
+            ? "Demo mode. Positions are simulated along each route, not real GPS. Use it to show the map working without hardware."
+            : "Live mode. Showing the last position each driver reported. Trucks appear here once a driver reports in."}
         </p>
       </motion.div>
 

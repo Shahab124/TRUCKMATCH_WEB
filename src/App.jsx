@@ -11,6 +11,8 @@ import NewTruckPage from "./pages/trucks/NewTruckPage";
 import TripsPage from "./pages/trips/TripsPage";
 import NewTripPage from "./pages/trips/NewTripPage";
 import BookingsPage from "./pages/BookingsPage";
+import BookingDetailPage from "./pages/BookingDetailPage";
+import ProfilePage from "./pages/ProfilePage";
 import Dashboard from "./pages/Dashboard";
 import MapPage from "./pages/MapPage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -53,6 +55,8 @@ export default function App() {
         <Route path="/trips/new" element={<Page><NewTripPage /></Page>} />
 
         <Route path="/bookings" element={<Page><BookingsPage /></Page>} />
+        <Route path="/bookings/:bookingId" element={<Page><BookingDetailPage /></Page>} />
+        <Route path="/profile" element={<Page><ProfilePage /></Page>} />
         <Route path="/map" element={<Page><MapPage /></Page>} />
 
         <Route path="*" element={<Page guard={false}><NotFoundPage /></Page>} />

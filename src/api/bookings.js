@@ -12,6 +12,22 @@ export async function getMyBookings() {
   return data;
 }
 
+// One booking plus its status timeline.
+export async function getBooking(bookingId) {
+  const { data } = await client.get(`/bookings/${bookingId}`);
+  return data;
+}
+
+export async function completeBooking(bookingId) {
+  const { data } = await client.put(`/bookings/${bookingId}/complete`);
+  return data;
+}
+
+export async function rateBooking(bookingId, { stars, note }) {
+  const { data } = await client.post(`/bookings/${bookingId}/rating`, { stars, note });
+  return data;
+}
+
 export async function acceptBooking(bookingId) {
   const { data } = await client.put(`/bookings/${bookingId}/accept`);
   return data;

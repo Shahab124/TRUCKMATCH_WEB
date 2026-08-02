@@ -25,8 +25,18 @@ export function AuthProvider({ children }) {
     setUser(null);
   }
 
+  // After editing the profile, keep the cached name (navbar, greeting) in sync
+  // without forcing a re-login.
+  function refreshName(name) {
+    setUser((prev) => {
+      const next = { ...prev, name };
+      saveSession({ access_token: getToken(), role: next.role, name });
+      return next;
+    });
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, login, signup, logout, refreshName }}>
       {children}
     </AuthContext.Provider>
   );

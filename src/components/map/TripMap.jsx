@@ -122,10 +122,10 @@ export default function TripMap({ trips = [], positions = {}, selectedId, onSele
           <>
             <Polyline positions={routeBounds} pathOptions={{ color: "#059669", weight: 3, opacity: 0.6, dashArray: "8 10" }} />
             <Marker position={from} icon={endpointIcon("#0f172a")}>
-              <Popup>Origin — {selected.origin}</Popup>
+              <Popup>Origin: {selected.origin}</Popup>
             </Marker>
             <Marker position={to} icon={endpointIcon("#059669")}>
-              <Popup>Destination — {selected.destination}</Popup>
+              <Popup>Destination: {selected.destination}</Popup>
             </Marker>
             <FitRoute bounds={routeBounds} />
           </>

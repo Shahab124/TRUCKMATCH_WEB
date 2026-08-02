@@ -127,8 +127,8 @@ export default function LoadsPage() {
               {loading ? "Fetching from your API..." : `Showing ${visibleLoads.length} of ${loads.length} loads`}
             </p>
           </div>
-          <Button variant="outline" onClick={() => setReloadKey((k) => k + 1)}>
-            <RefreshCw className="w-4 h-4" />
+          <Button variant="outline" onClick={() => setReloadKey((k) => k + 1)} aria-label="Refresh loads">
+            <RefreshCw className="w-4 h-4" aria-hidden="true" />
             <span className="hidden sm:inline">Refresh</span>
           </Button>
         </motion.div>

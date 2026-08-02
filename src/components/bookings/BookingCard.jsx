@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, Calendar, Check, X } from "lucide-react";
+import { MapPin, Calendar, Check, X, ArrowRight } from "lucide-react";
 import Badge from "../ui/Badge";
 import Button from "../ui/Button";
 import Spinner from "../ui/Spinner";
@@ -29,18 +30,28 @@ export default function BookingCard({ booking, canRespond, onAccept, onReject, b
         <Badge text={booking.status} color={statusColor(booking.status)} />
       </div>
 
-      <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-4">
-        <Calendar className="w-3 h-3" />
+      <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-4">
+        <Calendar className="w-3 h-3" aria-hidden="true" />
         Requested {formatDate(booking.created_at)}
       </div>
 
+      <Link
+        to={`/bookings/${booking.id}`}
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700
+                   hover:text-emerald-800 rounded transition-colors
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+      >
+        View progress
+        <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+      </Link>
+
       {canRespond && pending && (
-        <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-          <Button onClick={() => onAccept(booking.id)} disabled={busy} className="flex-1">
-            {busy ? <Spinner /> : <Check className="w-4 h-4" />} Accept
+        <div className="flex items-center gap-3 pt-4 mt-4 border-t border-slate-100">
+          <Button variant="accent" onClick={() => onAccept(booking.id)} disabled={busy} className="flex-1">
+            {busy ? <Spinner /> : <Check className="w-4 h-4" aria-hidden="true" />} Accept
           </Button>
           <Button variant="outline" onClick={() => onReject(booking.id)} disabled={busy} className="flex-1">
-            <X className="w-4 h-4" /> Decline
+            <X className="w-4 h-4" aria-hidden="true" /> Decline
           </Button>
         </div>
       )}

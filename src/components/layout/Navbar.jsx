@@ -74,10 +74,19 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2 sm:gap-3">
           {user && (
-            <div className="hidden sm:flex items-center gap-2">
-              <span className="text-sm font-semibold text-slate-700">{user.name}</span>
+            <Link
+              to="/profile"
+              className="hidden sm:flex items-center gap-2 pl-1 pr-2 py-1 rounded-full
+                         hover:bg-slate-100 transition-colors
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+            >
+              <span className="w-7 h-7 rounded-full bg-emerald-600 text-white text-xs font-bold
+                               flex items-center justify-center" aria-hidden="true">
+                {user.name?.[0]?.toUpperCase() ?? "?"}
+              </span>
+              <span className="text-sm font-semibold text-slate-800">{user.name}</span>
               <Badge text={user.role} color="slate" />
-            </div>
+            </Link>
           )}
 
           <Link to={action.to} className="hidden sm:block">
@@ -87,8 +96,13 @@ export default function Navbar() {
             </Button>
           </Link>
 
-          <Button variant="outline" onClick={handleLogout} className="hidden md:inline-flex">
-            <LogOut className="w-4 h-4" />
+          <Button
+            variant="outline"
+            onClick={handleLogout}
+            aria-label="Log out"
+            className="hidden md:inline-flex"
+          >
+            <LogOut className="w-4 h-4" aria-hidden="true" />
           </Button>
 
           {/* Mobile menu toggle */}
@@ -116,10 +130,18 @@ export default function Navbar() {
           >
             <div className="px-4 py-3 space-y-1">
               {user && (
-                <div className="flex items-center gap-2 px-3 pb-2 mb-1 border-b border-slate-100">
-                  <span className="text-sm font-semibold text-slate-700">{user.name}</span>
+                <Link
+                  to="/profile"
+                  onClick={() => setOpen(false)}
+                  className={`${linkBase} w-full mb-1 border-b border-slate-100 rounded-none pb-3`}
+                >
+                  <span className="w-7 h-7 rounded-full bg-emerald-600 text-white text-xs font-bold
+                                   flex items-center justify-center" aria-hidden="true">
+                    {user.name?.[0]?.toUpperCase() ?? "?"}
+                  </span>
+                  <span className="text-slate-800">{user.name}</span>
                   <Badge text={user.role} color="slate" />
-                </div>
+                </Link>
               )}
 
               {links.map(({ to, label, icon: Icon }) => (

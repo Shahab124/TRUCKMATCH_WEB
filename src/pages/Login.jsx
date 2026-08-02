@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Truck } from "lucide-react";
 import Button from "../components/ui/Button";
 import Spinner from "../components/ui/Spinner";
@@ -8,11 +8,14 @@ import { useAuth } from "../context/AuthContext";
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    params.get("expired") ? "Your session expired. Please sign in again." : ""
+  );
 
   async function handleSubmit(e) {
     e.preventDefault();
