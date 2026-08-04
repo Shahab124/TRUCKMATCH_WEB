@@ -5,6 +5,7 @@ import AppLayout from "../components/layout/AppLayout";
 import StatTile from "../components/dashboard/StatTile";
 import Button from "../components/ui/Button";
 import Spinner from "../components/ui/Spinner";
+import WakingNotice from "../components/ui/WakingNotice";
 import { getSummary } from "../api/stats";
 import { useFetch } from "../hooks/useFetch";
 import { useAuth } from "../context/AuthContext";
@@ -58,6 +59,12 @@ export default function Dashboard() {
           {role === "driver" ? "Here's your fleet at a glance." : "Here's your freight at a glance."}
         </p>
       </motion.div>
+
+      {/* Free-tier API can be asleep on the first visit; say so rather than
+          leaving the visitor looking at skeletons for a minute. */}
+      <div className="mb-5 empty:mb-0">
+        <WakingNotice pending={loading} />
+      </div>
 
       {loading && (
         <div className="grid gap-5 grid-cols-2 lg:grid-cols-4 mb-10">

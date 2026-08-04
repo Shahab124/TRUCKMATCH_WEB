@@ -4,6 +4,7 @@ import AuthLayout from "../components/layout/AuthLayout";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import Spinner from "../components/ui/Spinner";
+import WakingNotice from "../components/ui/WakingNotice";
 import { errorMessage } from "../lib/errors";
 import { useAuth } from "../context/AuthContext";
 
@@ -37,6 +38,8 @@ export default function Login() {
   return (
     <AuthLayout title="Welcome back" subtitle="Sign in to manage your freight.">
       <form onSubmit={handleSubmit} className="space-y-4">
+        <WakingNotice pending={loading} />
+
         {error && (
           <div className="rounded-lg bg-red-50 ring-1 ring-red-200 px-3 py-2.5"
                role="alert" aria-live="polite">

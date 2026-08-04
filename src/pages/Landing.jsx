@@ -6,10 +6,10 @@ import TripMap from "../components/map/TripMap";
 import Button from "../components/ui/Button";
 import PhotoPanel from "../components/ui/PhotoPanel";
 import { useSimulatedPositions } from "../hooks/useSimulatedPositions";
-import convoyPhoto from "../assets/photos/convoy.jpg";
-import parkedPhoto from "../assets/photos/road.jpg";
-import duskPhoto from "../assets/photos/highway.jpg";
-import goldenPhoto from "../assets/photos/loading.jpg";
+import convoyPhoto from "../assets/photos/convoy.webp";
+import parkedPhoto from "../assets/photos/road.webp";
+import duskPhoto from "../assets/photos/highway.webp";
+import goldenPhoto from "../assets/photos/loading.webp";
 
 // Real routes on a real map, positions simulated client side. Nothing here
 // calls the API, so the landing page works signed out.

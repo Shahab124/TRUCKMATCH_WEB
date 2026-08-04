@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Truck } from "lucide-react";
 import PhotoPanel from "../ui/PhotoPanel";
-import authPhoto from "../../assets/photos/depot.jpg";
+import authPhoto from "../../assets/photos/depot.webp";
 
 /**
  * Split screen shell for sign in and sign up. The photo panel is hidden below
